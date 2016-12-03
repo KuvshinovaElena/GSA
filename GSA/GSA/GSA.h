@@ -76,7 +76,7 @@ vector<double> GSA(double(*func)(vector<double>), int dim, bool(*restrict) (vect
 	{
 		pos[i].resize(dim);
 	}
-	srand(time(NULL));
+	srand(static_cast<size_t>(time(NULL)));
 	pos = init(dim, N, restrict);	//Инициализация агентов случайным образом
 	vector<vector<double>> vel(N);			//Вектор скоростей агентов
 	for (int i = 0; i < N; i++)

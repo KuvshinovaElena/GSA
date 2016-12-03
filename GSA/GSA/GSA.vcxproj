@@ -114,7 +114,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GSA.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="test_func.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GSA.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
