@@ -9,6 +9,7 @@ using std::vector;
 
 namespace Prep
 {
+	//Нахождение евклидова расстояния
 	double distEuclid(vector<double> a, vector<double> b)
 	{
 		if (a.size() != b.size()) return 0;
@@ -19,6 +20,8 @@ namespace Prep
 		}
 		return sqrt(r);
 	}
+
+	//Нахождение машинного эпсилон
 	double machineEps()
 	{
 		double e = 1.0;
@@ -91,7 +94,7 @@ vector<double> GSA(double(*func)(vector<double>), int dim, bool(*restrict) (vect
 		accel[i].resize(dim);
 	}
 	vector<double> tempBest(dim);	//Хранение текущего результата (позиции)
-	double best = 0;		//Лучшее текущее значение для целевой функции
+	double best;		//Лучшее текущее значение для целевой функции
 	double tempfunc = 0;			//Значение функции на текущем шаге
 	double Gi = 0;
 	for (int i = 0; i < max_it; i++)
@@ -100,10 +103,12 @@ vector<double> GSA(double(*func)(vector<double>), int dim, bool(*restrict) (vect
 		fitness = evaluate(pos, func);
 		pos = spaceBound(pos, restrict);
 		vector<double>::iterator ext = mode ? std::max_element(fitness.begin(), fitness.end()) : std::min_element(fitness.begin(), fitness.end());
-		vector<double>::iterator bad = std::max_element(mass.begin(), mass.end());
 		tempBest = pos[distance(fitness.begin(), ext)];
-		
 		tempfunc = func(tempBest);
+		if (i == 0) {
+			best = tempfunc; 
+			result = tempBest;
+		}
 		if (mode)
 		{
 			if (best < tempfunc) 
@@ -121,12 +126,14 @@ vector<double> GSA(double(*func)(vector<double>), int dim, bool(*restrict) (vect
 			}
 		}
 		mass = calcMass(fitness,mode);
+		vector<double>::iterator bad = std::min_element(mass.begin(), mass.end());
 		Gi = calcGconst(i, G);
 		accel = calcAcceleration(mass, pos, Gi, i);
 		updateAgents(pos, accel, vel);
-		if (N < max_it)
+		if (N > max_it)
 		{
-			pos.erase(pos.begin() + distance(fitness.begin(), bad), pos.begin() + distance(fitness.begin(), bad));
+			int f = distance(mass.begin(), bad);
+			pos.erase(pos.begin() + distance(mass.begin(), bad), pos.begin() + distance(mass.begin(), bad));
 		}
 	}
 	return result;
