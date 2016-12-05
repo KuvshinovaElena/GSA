@@ -2,6 +2,7 @@
 #include"GSA.h"
 #include<stdlib.h>
 #include <Windows.h>
+#include<exception>
 #include "resource.h"
 
 BOOL CALLBACK DlgProc(HWND, UINT, WPARAM, LPARAM);
@@ -10,9 +11,9 @@ BOOL CALLBACK DlgProc(HWND, UINT, WPARAM, LPARAM);
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE
 	hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	int ret = DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG1),
-		NULL, (DLGPROC)DlgProc);
-	return ret;
+		int ret = DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG1),
+			NULL, (DLGPROC)DlgProc);
+		return ret;
 }
 
 
@@ -93,18 +94,18 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam,
 			}
 			if ((!func) || (!restrict)||(!G)||(!N)||(!it)||(n<0))
 			{
-				MessageBox(NULL, (LPCTSTR)"ОШИБКА! Поля заполнены не корректно", "Inform",
+				MessageBox(NULL, (LPCTSTR)"ОШИБКА! Поля заполнены не корректно", "Error",
 					MB_OK | MB_ICONWARNING);
 				return FALSE;
 			}
 			vector<double> max = GSA(func, 2, restrict, G, N, it, mode);
 			double best = func(max);
-			TCHAR R[10];
-			_gcvt_s(R,10,max[0],5);
+			char R[30];
+			_gcvt_s(R, 30, max[0], 8);
 			SetDlgItemText(hwnd, IDC_RX, R);
-			_gcvt_s(R, 10, max[1], 5);
+			_gcvt_s(R, 30, max[1], 8);
 			SetDlgItemText(hwnd, IDC_RY, R);
-			_gcvt_s(R, 10, best, 5);
+			_gcvt_s(R, 30, best, 8);
 			SetDlgItemText(hwnd, IDC_RFUNC, R);
 			return FALSE;
 		}
