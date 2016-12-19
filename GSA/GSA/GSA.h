@@ -37,8 +37,8 @@ namespace Prep
 Реализация алгоритма гравитационного поиска
 */
 
-//Гравитационный алгоритм поиска (по умолчанию mode = 0 - минимизация функции, 1 - максимизация)
-vector<double> GSA(double(*func)(vector<double>), int, bool(*restrict) (vector<double>), double, int, int, bool mode = 0);
+//Гравитационный алгоритм поиска (mode = 0 - минимизация функции, 1 - максимизация)
+vector<double> GSA(double(*func)(vector<double>), int, bool(*restrict) (vector<double>), double, int, int, bool mode);
 
 //Инициализирует положение агентов в пространстве поиска (случайным образом)
 vector<vector<double>> init(int, int, bool (*restrict)(vector<double>));
@@ -132,7 +132,6 @@ vector<double> GSA(double(*func)(vector<double>), int dim, bool(*restrict) (vect
 		updateAgents(pos, accel, vel);
 		if (N > max_it)
 		{
-			int f = distance(mass.begin(), bad);
 			pos.erase(pos.begin() + distance(mass.begin(), bad), pos.begin() + distance(mass.begin(), bad));
 		}
 	}
@@ -251,7 +250,7 @@ inline double calcGconst(int it, double G0)
 	G0 - начальное значение гравитационной постоянной
 	*/
 	double d = 0.1; //Свободный параметр алгоритма
-	return G0*std::pow((1 / (it + 1)), d);
+	return G0*std::pow((1.0 / (it + 1)), d);
 }
 
 void updateAgents(vector<vector<double>>& pos, vector<vector<double>> acc, vector<vector<double>>& vel)

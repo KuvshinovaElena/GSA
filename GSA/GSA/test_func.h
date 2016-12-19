@@ -26,5 +26,10 @@ double  func3(std::vector<double> pos)
 
 bool restrict1(std::vector<double> point)
 {
-	return ((point[0]<4) && (point[0]>-4))&&(point[1]<4)&&(point[1]>-4);
+	return (point[0]<4) && (point[0]>-4)&&(point[1]>-4)&&(point[1]<4);
+}
+
+bool restrict2(std::vector<double> pos)
+{
+	return (pos[0] < 4) && (pos[0] > -4);
 }

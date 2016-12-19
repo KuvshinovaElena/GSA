@@ -1,9 +1,14 @@
 #include"test_func.h"
 #include"GSA.h"
+#include <iostream>
+#include <sstream>
+#include <string>
 #include<stdlib.h>
+#include <cmath>
 #include <Windows.h>
-#include<exception>
 #include "resource.h"
+
+
 
 BOOL CALLBACK DlgProc(HWND, UINT, WPARAM, LPARAM);
 
@@ -28,6 +33,7 @@ TCHAR str_max[] = { "max" };
 
 HWND hCombo3;
 TCHAR str_res1[] = { "restrict1" };
+TCHAR str_res2[] = { "restrict2" };
 
 BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam,
 	LPARAM lParam)
@@ -48,6 +54,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam,
 
 		hCombo3 = GetDlgItem(hwnd, IDC_REST);
 		SendMessage(hCombo3, CB_ADDSTRING, 0, (LPARAM)str_res1);
+		SendMessage(hCombo3, CB_ADDSTRING, 0, (LPARAM)str_res2);
 		return FALSE;
 	}
 	case WM_COMMAND:
@@ -90,7 +97,11 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam,
 			case 0:
 			{
 				restrict = restrict1;
+				break;
 			}
+			case 1:
+				restrict = restrict2;
+				break;
 			}
 			if ((!func) || (!restrict)||(!G)||(!N)||(!it)||(n<0))
 			{
@@ -100,12 +111,23 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam,
 			}
 			vector<double> max = GSA(func, 2, restrict, G, N, it, mode);
 			double best = func(max);
+			std::ostringstream out;
+			out << std::fixed << max[0];
+
 			char R[30];
-			_gcvt_s(R, 30, max[0], 8);
+			strcpy_s(R, out.str().c_str());
 			SetDlgItemText(hwnd, IDC_RX, R);
-			_gcvt_s(R, 30, max[1], 8);
+
+			out.str("");
+
+			out << std::fixed << max[1];
+			strcpy_s(R, out.str().c_str());
 			SetDlgItemText(hwnd, IDC_RY, R);
-			_gcvt_s(R, 30, best, 8);
+
+			out.str("");
+
+			out << std::fixed << best;
+			strcpy_s(R, out.str().c_str());
 			SetDlgItemText(hwnd, IDC_RFUNC, R);
 			return FALSE;
 		}
@@ -142,8 +164,12 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam,
 			{
 				case 0:
 				{
-					restrict = restrict1;
 					SetDlgItemText(hwnd, IDC_VREST, "- 4 <= x <= 4\r\n- 4 <= y <= 4");
+					break;
+				}
+				case 1:
+				{
+					SetDlgItemText(hwnd, IDC_VREST, "- 4 <= x <= 4");
 					break;
 				}
 			}
