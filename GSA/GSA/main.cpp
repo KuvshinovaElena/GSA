@@ -109,7 +109,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam,
 					MB_OK | MB_ICONWARNING);
 				return FALSE;
 			}
-			vector<double> max = GSA(func, 2, restrict, G, N, it, mode);
+			vector<double> max = GSA::GSA(func, 2, restrict, G, N, it, mode);
 			double best = func(max);
 			std::ostringstream out;
 			out << std::fixed << max[0];
@@ -158,7 +158,6 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam,
 			return FALSE;
 		case IDC_REST:
 		{
-			bool(*restrict) (vector<double>);
 			int n = SendMessage(hCombo3, CB_GETCURSEL, 0, 0L);
 			switch (n)
 			{
