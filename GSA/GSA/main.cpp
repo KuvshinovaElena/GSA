@@ -109,7 +109,10 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam,
 					MB_OK | MB_ICONWARNING);
 				return FALSE;
 			}
+			double start = GetTickCount();
 			vector<double> max = GSA::GSA(func, 2, restrict, G, N, it, mode);
+			double end = GetTickCount();
+			double time = end - start;
 			double best = func(max);
 			std::ostringstream out;
 			out << std::fixed << max[0];
@@ -129,32 +132,44 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam,
 			out << std::fixed << best;
 			strcpy_s(R, out.str().c_str());
 			SetDlgItemText(hwnd, IDC_RFUNC, R);
+
+			out.str("");
+
+			out << std::fixed << time;
+			strcpy_s(R, out.str().c_str());
+			SetDlgItemText(hwnd, IDC_TIME, R);
+
 			return FALSE;
 		}
 		case IDC_N:
 			SetDlgItemText(hwnd, IDC_RX, "");
 			SetDlgItemText(hwnd, IDC_RY, "");
 			SetDlgItemText(hwnd, IDC_RFUNC, "");
+			SetDlgItemText(hwnd, IDC_TIME, "");
 			return FALSE;
 		case IDC_G:
 			SetDlgItemText(hwnd, IDC_RX, "");
 			SetDlgItemText(hwnd, IDC_RY, "");
 			SetDlgItemText(hwnd, IDC_RFUNC, "");
+			SetDlgItemText(hwnd, IDC_TIME, "");
 			return FALSE;
 		case IDC_IT:
 			SetDlgItemText(hwnd, IDC_RX, "");
 			SetDlgItemText(hwnd, IDC_RY, "");
 			SetDlgItemText(hwnd, IDC_RFUNC, "");
+			SetDlgItemText(hwnd, IDC_TIME, "");
 			return FALSE;
 		case IDC_EXS:
 			SetDlgItemText(hwnd, IDC_RX, "");
 			SetDlgItemText(hwnd, IDC_RY, "");
 			SetDlgItemText(hwnd, IDC_RFUNC, "");
+			SetDlgItemText(hwnd, IDC_TIME, "");
 			return FALSE;
 		case IDC_FUNC:
 			SetDlgItemText(hwnd, IDC_RX, "");
 			SetDlgItemText(hwnd, IDC_RY, "");
 			SetDlgItemText(hwnd, IDC_RFUNC, "");
+			SetDlgItemText(hwnd, IDC_TIME, "");
 			return FALSE;
 		case IDC_REST:
 		{
@@ -181,6 +196,8 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam,
 		case IDC_RX:
 			return FALSE;
 		case IDC_RY:
+			return FALSE;
+		case IDC_TIME:
 			return FALSE;
 		}
 	}
