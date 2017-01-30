@@ -57,9 +57,8 @@ vector<double> GSA::GSA(double(*func)(vector<double>), int dim, bool(*restrict) 
 	double Gi = 0;
 	for (int i = 0; i < max_it; i++)
 	{
-
-		fitness = evaluate(pos, func);
 		pos = spaceBound(pos, restrict);
+		fitness = evaluate(pos, func);
 		vector<double>::iterator ext = mode ? std::max_element(fitness.begin(), fitness.end()) : std::min_element(fitness.begin(), fitness.end());
 		tempBest = pos[distance(fitness.begin(), ext)];
 		tempfunc = func(tempBest);
@@ -151,7 +150,9 @@ vector<vector<double>> GSA::calcAcceleration(vector<double> mass, vector<vector<
 	max_it - максимальное число итераций
 	G - гравитационная постоянная (для i)
 	*/
+
 	vector<vector<double>> ac(pos.size());
+	double h = 0;
 	for (size_t i = 0; i < pos.size(); i++)
 	{
 		ac[i].resize(pos[i].size());
@@ -164,7 +165,8 @@ vector<vector<double>> GSA::calcAcceleration(vector<double> mass, vector<vector<
 				for (size_t k = 0; k < pos[j].size(); k++)
 				{
 					//Ускорение по k-ому измерению
-					ac[i][k] = (rand() / double(RAND_MAX)) * G * mass[j] * (pos[j][k] - pos[i][k]) / (R + Prep::machineEps());
+					h = double(rand())/RAND_MAX;
+					ac[i][k] += (h * G * mass[j] * (pos[j][k] - pos[i][k])) / (R + Prep::machineEps());
 				}
 			}
 		}
@@ -223,8 +225,8 @@ void GSA::updateAgents(vector<vector<double>>& pos, vector<vector<double>> acc, 
 	{
 		for (size_t j = 0; j < pos[i].size(); j++)
 		{
-			vel[i][j] = rand() / RAND_MAX * vel[i][j] + acc[i][j];
-			pos[i][j] = pos[i][j] + vel[i][j];
+			vel[i][j] = (rand() / RAND_MAX) * vel[i][j] + acc[i][j];
+			pos[i][j] += vel[i][j];
 		}
 	}
 }

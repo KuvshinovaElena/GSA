@@ -21,12 +21,13 @@ double func2(std::vector<double> pos)
 double  func3(std::vector<double> pos)
 {
 	double x = pos[0];
-	return x*x;
+	double y = pos[1];
+	return x*x + y*y;
 }
 
 bool restrict1(std::vector<double> point)
 {
-	return (point[0]<4) && (point[0]>-4)&&(point[1]>-4)&&(point[1]<4);
+	return (point[0]<1000) && (point[0]>-1000)&&(point[1]>-1000)&&(point[1]<1000);
 }
 
 bool restrict2(std::vector<double> pos)

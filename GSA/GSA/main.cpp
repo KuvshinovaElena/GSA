@@ -25,7 +25,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE
 HWND hCombo1;
 TCHAR str_Him[] = {"Функция Химмельблау"};
 TCHAR str_Simp1[] = { "x + y" };
-TCHAR str_Simp2[] = { "x^2" };
+TCHAR str_Simp2[] = { "x^2 + y^2" };
 
 HWND hCombo2;
 TCHAR str_min[] = { "min" };
@@ -63,8 +63,10 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam,
 		{
 		case IDC_OK:
 		{
+
 			TCHAR SN[10];
 			int n;
+
 			//получаем данные из поля IDC_EDIT1
 			GetDlgItemText(hwnd, IDC_N, SN, 8);
 			int N = atoi(SN);
@@ -109,6 +111,10 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam,
 					MB_OK | MB_ICONWARNING);
 				return FALSE;
 			}
+			SetDlgItemText(hwnd, IDC_RX, "");
+			SetDlgItemText(hwnd, IDC_RY, "");
+			SetDlgItemText(hwnd, IDC_RFUNC, "");
+			SetDlgItemText(hwnd, IDC_TIME, "");
 			double start = GetTickCount();
 			vector<double> max = GSA::GSA(func, 2, restrict, G, N, it, mode);
 			double end = GetTickCount();
@@ -120,8 +126,8 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam,
 			char R[30];
 			strcpy_s(R, out.str().c_str());
 			SetDlgItemText(hwnd, IDC_RX, R);
-
 			out.str("");
+
 
 			out << std::fixed << max[1];
 			strcpy_s(R, out.str().c_str());
@@ -178,7 +184,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam,
 			{
 				case 0:
 				{
-					SetDlgItemText(hwnd, IDC_VREST, "- 4 <= x <= 4\r\n- 4 <= y <= 4");
+					SetDlgItemText(hwnd, IDC_VREST, "- 100 <= x <= 100\r\n- 100 <= y <= 100");
 					break;
 				}
 				case 1:
